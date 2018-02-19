@@ -1,0 +1,26 @@
+version: '2'
+services:
+  zf3:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - .:/var/www
+    env_file: ./.env
+    links:
+      - mysql
+
+  data:
+    image: busybox
+    volumes:
+      - ./misc/data:/var/lib/mysql
+
+  mysql:
+    image: mysql:5.7
+    env_file: ./.env
+    ports:
+      - "3306:3306"
+    volumes_from:
+      - data
+    volumes:
+      - ./sql/:/docker-entrypoint-initdb.d/
