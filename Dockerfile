@@ -9,6 +9,11 @@ RUN apt-get update \
  && curl -sS https://getcomposer.org/installer \
   | php -- --install-dir=/usr/local/bin --filename=composer
 
-RUN yes | pecl install xdebug 
+COPY php.ini /usr/local/etc/php/
+
+RUN pecl config-set php_ini /usr/local/etc/php/php.ini
+
+RUN pecl install xdebug-2.6.0 \
+ && docker-php-ext-enable xdebug
 
 WORKDIR /var/www
